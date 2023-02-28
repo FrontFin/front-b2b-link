@@ -118,7 +118,7 @@ After successfull authentication on Front Finance user will be redirected back t
 
 ### Using tokens
 
-Yo u can use broker tokens perform requests to get current balance, assets and execute transactions. Full API reference can be found [here](https://integration-api.getfront.com/apireference).
+You can use broker tokens to perform requests to get current balance, assets and execute transactions. Full API reference can be found [here](https://integration-api.getfront.com/apireference).
 
 ## Typescript support
 
