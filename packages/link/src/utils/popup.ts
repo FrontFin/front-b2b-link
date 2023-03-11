@@ -121,11 +121,15 @@ function eventsListener(
     }
     case 'oauthLinkOpen': {
       if (event.data.link) {
+        const w = 700
+        const h = 800
+        const left = screen.width / 2 - w / 2
+        const top = screen.height / 2 - h / 2
         window
           .open(
             event.data.link,
             '_blank',
-            'popup,noopener,noreferrer,resizable,scrollbars'
+            `popup,noopener,noreferrer,resizable,scrollbars,width=${w},height=${h},top=${top},left=${left}`
           )
           ?.focus()
       }
