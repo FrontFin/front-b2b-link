@@ -38,6 +38,10 @@ const styles = `
     top: 0;
     bottom: 0;
     right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   #${backdropId} {
@@ -53,19 +57,19 @@ const styles = `
 
   #${popupContentId} {
     position: absolute;
-    min-height: 710px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    height: 80%;
+    max-height: 710px;
+    min-height: 685px;
+    margin: auto;
     z-index: 10001;
+    width: 30%;
     max-width: 430px;
+    min-width: 380px;
     display: flex;
     flex-direction: column;
-    top: 50%;
-    transform: translateY(-50%);
     border-radius: 24px;
     background: white;
+    flex-grow: 1;
   }
 
   #${popupContentId} iframe {
