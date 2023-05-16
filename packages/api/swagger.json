@@ -5805,6 +5805,12 @@
             },
             "description": "List of fiat balances of the account.",
             "nullable": true
+          },
+          "historyRecordLimit": {
+            "type": "integer",
+            "description": "Limit for history records",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -1369,6 +1369,11 @@ export interface B2BBrokerTradingFeatureInfo {
   isTradingSupported?: boolean
   /** List of fiat balances of the account. */
   fiatBalances?: B2BBrokerAccountBalance[] | null
+  /**
+   * Limit for history records
+   * @format int32
+   */
+  historyRecordLimit?: number | null
 }
 
 export interface B2BBrokerTradingFeatureInfoIApiResult {
