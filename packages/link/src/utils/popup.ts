@@ -11,12 +11,13 @@ const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
 const stylesId = 'front-link-popup__styles'
+const iframeId = 'front-link-popup__iframe'
 
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">
   <div id="${backdropId}"></div>
   <div id="${popupContentId}">
-    <iframe src="${link}" allow="clipboard-read *; clipboard-write *" />
+    <iframe id="${iframeId}" src="${link}" allow="clipboard-read *; clipboard-write *" />
   </div>
 </div>
 `
@@ -100,6 +101,7 @@ const styles = `
 `
 
 let currentOptions: FrontOptions | undefined
+let iframeUrl: URL | undefined
 
 function eventsListener(
   event: MessageEvent<{
@@ -153,6 +155,18 @@ function eventsListener(
 
       break
     }
+    case 'loaded': {
+      if (currentOptions?.accessTokens) {
+        const iframeElement = document.getElementById(
+          iframeId
+        ) as HTMLIFrameElement
+
+        iframeElement.contentWindow?.postMessage(
+          { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
+          iframeUrl?.origin || 'https://web.getfront.com'
+        )
+      }
+    }
   }
 }
 
@@ -177,6 +191,7 @@ export function removePopup(): void {
 export function addPopup(iframeLink: string, options: FrontOptions): void {
   removePopup()
   currentOptions = options
+  iframeUrl = new URL(iframeLink)
   const popup = getPopupHtml(iframeLink)
   window.document.head.appendChild(htmlToElement(styles))
   window.document.body.appendChild(htmlToElement(popup))
