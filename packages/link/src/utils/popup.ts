@@ -2,7 +2,7 @@ const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
 const stylesId = 'front-link-popup__styles'
-const iframeId = 'front-link-popup__iframe'
+export const iframeId = 'front-link-popup__iframe'
 
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">
