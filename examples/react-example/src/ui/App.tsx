@@ -3,11 +3,17 @@ import { frontApiUrl, clientId, clientSecret } from '../utility/config'
 import { FrontComponent } from './Front'
 import { FrontPayload } from '@front-finance/link'
 import { FrontApi } from '@front-finance/api'
+import DynamicForm, { FormValues } from './DynamicForm'
 
 export const App: React.FC = () => {
   const [iframeLink, setIframeLink] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [payload, setPayload] = useState<FrontPayload | null>(null)
+  const [tagetAddresses, setTargetAddresses] = useState<FormValues>({
+    toAddresses: []
+  })
+
+  console.log(tagetAddresses)
 
   const getAuthLink = useCallback(async () => {
     setError(null)
@@ -21,10 +27,14 @@ export const App: React.FC = () => {
     })
 
     // this request should be performed from the backend side
-    const response = await api.managedAccountAuthentication.v1CataloglinkList({
-      UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
-      CallbackUrl: window.location.href // insert your callback URL here
-    })
+    const response = await api.managedAccountAuthentication.v1CataloglinkCreate(
+      tagetAddresses,
+      {
+        UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
+        CallbackUrl: window.location.href, // insert your callback URL here
+        EnableTransfers: true
+      }
+    )
 
     const data = response.data
     if (response.status !== 200 || !data?.content) {
@@ -36,7 +46,7 @@ export const App: React.FC = () => {
     } else {
       setIframeLink(data.content.iFrameUrl)
     }
-  }, [])
+  }, [tagetAddresses])
 
   return (
     <div style={{ padding: '15px' }}>
@@ -77,6 +87,10 @@ export const App: React.FC = () => {
           Front Broker Connection
         </button>
       </div>
+      <br />
+      <br />
+      <h2>Target addresses</h2>
+      <DynamicForm setOutput={setTargetAddresses} />
 
       <FrontComponent
         iframeLink={iframeLink}
