@@ -1,9 +1,12 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { frontApiUrl, clientId, clientSecret } from '../utility/config'
 import { FrontComponent } from './Front'
 import { FrontPayload } from '@front-finance/link'
-import { FrontApi } from '@front-finance/api'
-import DynamicForm, { FormValues } from './DynamicForm'
+import {
+  FrontApi,
+  NetworkResponseWithIntegrations as Network
+} from '@front-finance/api'
+import DynamicForm, { FormValues, defaultNetworks } from './DynamicForm'
 
 export const App: React.FC = () => {
   const [iframeLink, setIframeLink] = useState<string | null>(null)
@@ -12,19 +15,38 @@ export const App: React.FC = () => {
   const [tagetAddresses, setTargetAddresses] = useState<FormValues>({
     toAddresses: []
   })
+  const [networks, setNetworks] = useState<Network[]>(defaultNetworks)
 
   console.log(tagetAddresses)
+
+  const api = new FrontApi({
+    baseURL: frontApiUrl,
+    headers: {
+      'x-client-id': clientId,
+      'x-client-secret': clientSecret
+    }
+  })
+
+  useEffect(() => {
+    async function getNetworks() {
+      const resp = await api.managedTransfers.v1TransfersManagedNetworksList()
+      const data = resp.data
+
+      if (resp.status !== 200 || !data?.content) {
+        const error = data?.message || resp.statusText
+        console.error('Networks error!', error)
+      } else if (!data.content.networks) {
+        console.log('Empty networks!')
+      } else {
+        setNetworks(data.content.networks)
+      }
+    }
+    getNetworks()
+  }, [])
 
   const getAuthLink = useCallback(async () => {
     setError(null)
     setIframeLink(null)
-    const api = new FrontApi({
-      baseURL: frontApiUrl,
-      headers: {
-        'x-client-id': clientId, // insert your client id here
-        'x-client-secret': clientSecret // do not use your clientSecret on the FE
-      }
-    })
 
     // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1CataloglinkCreate(
@@ -90,7 +112,7 @@ export const App: React.FC = () => {
       <br />
       <br />
       <h2>Target addresses</h2>
-      <DynamicForm setOutput={setTargetAddresses} />
+      <DynamicForm setOutput={setTargetAddresses} networks={networks} />
 
       <FrontComponent
         iframeLink={iframeLink}

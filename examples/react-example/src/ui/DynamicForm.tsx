@@ -1,14 +1,9 @@
 import React from 'react'
 import { Formik, Form, FieldArray, FieldArrayRenderProps } from 'formik'
 import Select from 'react-select'
+import { NetworkResponseWithIntegrations as Network } from '@front-finance/api'
 
-interface Network {
-  id: string
-  name: string
-  supportedTokens: string[]
-}
-
-const networks: Network[] = [
+export const defaultNetworks: Network[] = [
   {
     id: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12',
     name: 'Polygon',
@@ -42,12 +37,13 @@ export interface FormValues {
 }
 
 interface DynamicFormProps {
+  networks: Network[]
   setOutput: (output: FormValues) => void
 }
 
 const toOption = (value: string) => ({ value, label: value })
 
-const DynamicForm: React.FC<DynamicFormProps> = ({ setOutput }) => (
+const DynamicForm: React.FC<DynamicFormProps> = ({ networks, setOutput }) => (
   <Formik
     initialValues={{
       toAddresses: [{ networkId: '', symbol: '', address: '' }] as ToAddress[]
@@ -64,7 +60,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ setOutput }) => (
                   network => network.id === line?.networkId
                 )
                 const options = selectedNetwork
-                  ? selectedNetwork.supportedTokens.map(toOption)
+                  ? selectedNetwork?.supportedTokens?.map(toOption)
                   : []
                 const networkOptions = networks.map(network => ({
                   value: network.id,
