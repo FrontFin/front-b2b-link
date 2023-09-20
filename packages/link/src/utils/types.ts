@@ -138,7 +138,8 @@ export interface FrontOptions {
   accessTokens?: IntegrationAccessToken[]
 
   /**
-   * (Optional)
+   * (Optional) The authentication token of the target integration.
+   * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
    */
   transferDestinationToken?: TransferDestinationToken
 }
