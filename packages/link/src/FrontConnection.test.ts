@@ -6,7 +6,6 @@ import {
   EventType,
   FrontPayload,
   IntegrationAccessToken,
-  TransferDestinationToken,
   TransferFinishedPayload
 } from './utils/types'
 
@@ -244,15 +243,20 @@ describe('createFrontConnection tests', () => {
         brokerName: 'A'
       }
     ]
-    const destinationToken: TransferDestinationToken = {
-      accessToken: 'some-token',
-      type: 'acorns'
-    }
+    const destinationTokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'ttoken',
+        accountId: 'tid',
+        accountName: 'tname',
+        brokerType: 'acorns',
+        brokerName: 'tbrokername'
+      }
+    ]
     const frontConnection = createFrontConnection({
       clientId: 'test',
       onBrokerConnected: jest.fn(),
       accessTokens: tokens,
-      transferDestinationToken: destinationToken
+      transferDestinationTokens: destinationTokens
     })
 
     frontConnection.openPopup('http://localhost/1')
@@ -281,7 +285,7 @@ describe('createFrontConnection tests', () => {
     )
 
     expect(postMessageSpy).toBeCalledWith(
-      { type: 'frontTransferDestinationToken', payload: destinationToken },
+      { type: 'frontTransferDestinationTokens', payload: destinationTokens },
       'http://localhost'
     )
   })

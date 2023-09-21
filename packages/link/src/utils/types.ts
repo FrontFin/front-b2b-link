@@ -97,11 +97,6 @@ export interface IntegrationAccessToken {
   brokerName: string
 }
 
-export interface TransferDestinationToken {
-  accessToken: string
-  type: BrokerType
-}
-
 export interface FrontOptions {
   /**
    * Client ID that can be obtained at https://dashboard.getfront.com/company/keys
@@ -138,8 +133,8 @@ export interface FrontOptions {
   accessTokens?: IntegrationAccessToken[]
 
   /**
-   * (Optional) The authentication token of the target integration.
+   * (Optional) An array of integration access tokens.
    * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
    */
-  transferDestinationToken?: TransferDestinationToken
+  transferDestinationTokens?: IntegrationAccessToken[]
 }

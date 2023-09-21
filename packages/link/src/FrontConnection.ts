@@ -93,11 +93,11 @@ function eventsListener(
           iframeUrlObject?.origin || 'https://web.getfront.com'
         )
       }
-      if (currentOptions?.transferDestinationToken) {
+      if (currentOptions?.transferDestinationTokens) {
         iframeElement().contentWindow?.postMessage(
           {
-            type: 'frontTransferDestinationToken',
-            payload: currentOptions.transferDestinationToken
+            type: 'frontTransferDestinationTokens',
+            payload: currentOptions.transferDestinationTokens
           },
           iframeUrlObject?.origin || 'https://web.getfront.com'
         )
