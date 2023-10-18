@@ -1,8 +1,12 @@
+import { LinkStyles } from './types'
+
 const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
 const stylesId = 'front-link-popup__styles'
 export const iframeId = 'front-link-popup__iframe'
+let overlayOpacity
+let iframeCornerRadius
 
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">
@@ -46,7 +50,7 @@ const styles = `
     right: 0;
     z-index: 10000;
     background: black;
-    opacity: 0.6;
+    opacity: ${overlayOpacity};
   }
 
   #${popupContentId} {
@@ -70,7 +74,7 @@ const styles = `
     border: none;
     width: 100%;
     flex-grow: 1;
-    border-radius: 24px;
+    border-radius: ${iframeCornerRadius}px;
   }
 
   @media only screen and (max-width: 768px) {
@@ -106,9 +110,11 @@ export function removePopup(): void {
   existingStyles?.parentElement?.removeChild(existingStyles)
 }
 
-export function addPopup(iframeLink: string): void {
+export function addPopup(iframeLink: string, linkStyles?: LinkStyles): void {
   removePopup()
   const popup = getPopupHtml(iframeLink)
+  overlayOpacity = linkStyles?.overlayOpacity || 0.6
+  iframeCornerRadius = linkStyles?.iframeCornerRadius || 24
   const stylesElement = htmlToElement(styles)
   if (stylesElement) {
     window.document.head.appendChild(stylesElement)

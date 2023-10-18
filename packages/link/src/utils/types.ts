@@ -97,6 +97,12 @@ export interface IntegrationAccessToken {
   brokerName: string
 }
 
+export interface LinkStyles {
+  primaryColor: string
+  overlayOpacity: number
+  iframeCornerRadius: number
+}
+
 export interface FrontOptions {
   /**
    * Client ID that can be obtained at https://dashboard.getfront.com/company/keys
@@ -137,4 +143,6 @@ export interface FrontOptions {
    * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
    */
   transferDestinationTokens?: IntegrationAccessToken[]
+
+  styles?: LinkStyles
 }

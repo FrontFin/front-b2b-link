@@ -13,8 +13,12 @@ import { FrontEventType, isFrontEventTypeKey } from './utils/event-types'
 let currentOptions: FrontOptions | undefined
 let iframeUrlObject: URL | undefined
 
-const iframeElement = () => {
-  return document.getElementById(iframeId) as HTMLIFrameElement
+const postMessageToIframe = (message: unknown) => {
+  const iframe = document.getElementById(iframeId) as HTMLIFrameElement
+  iframe.contentWindow?.postMessage(
+    message,
+    iframeUrlObject?.origin || 'https://web.getfront.com'
+  )
 }
 
 function eventsListener(
@@ -88,19 +92,24 @@ function eventsListener(
     }
     case 'loaded': {
       if (currentOptions?.accessTokens) {
-        iframeElement().contentWindow?.postMessage(
-          { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
-          iframeUrlObject?.origin || 'https://web.getfront.com'
-        )
+        postMessageToIframe({
+          type: 'frontAccessTokens',
+          payload: currentOptions.accessTokens
+        })
       }
+
       if (currentOptions?.transferDestinationTokens) {
-        iframeElement().contentWindow?.postMessage(
-          {
-            type: 'frontTransferDestinationTokens',
-            payload: currentOptions.transferDestinationTokens
-          },
-          iframeUrlObject?.origin || 'https://web.getfront.com'
-        )
+        postMessageToIframe({
+          type: 'frontTransferDestinationTokens',
+          payload: currentOptions.transferDestinationTokens
+        })
+      }
+
+      if (currentOptions?.styles) {
+        postMessageToIframe({
+          type: 'frontLinkStyle',
+          payload: currentOptions.styles
+        })
       }
 
       currentOptions?.onEvent?.({ type: 'pageLoaded' })
@@ -128,7 +137,7 @@ export const createFrontConnection = (
     iframeUrlObject = new URL(iframeUrl)
 
     window.removeEventListener('message', eventsListener)
-    addPopup(iframeUrl)
+    addPopup(iframeUrl, options.styles)
     window.addEventListener('message', eventsListener)
   }
 
