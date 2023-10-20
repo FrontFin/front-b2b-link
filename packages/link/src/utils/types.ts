@@ -97,10 +97,10 @@ export interface IntegrationAccessToken {
   brokerName: string
 }
 
-export interface LinkStyles {
-  primaryColor: string
-  overlayOpacity: number
-  iframeCornerRadius: number
+export interface LinkStyle {
+  primaryColor?: string
+  overlayOpacity?: number
+  iframeBorderRadius?: number
 }
 
 export interface FrontOptions {
@@ -144,5 +144,9 @@ export interface FrontOptions {
    */
   transferDestinationTokens?: IntegrationAccessToken[]
 
-  styles?: LinkStyles
+  /**
+   * (Optional) Custom style for the Link UI.
+   * Can be used to adopt the Link UI to desired style.
+   */
+  linkStyle?: LinkStyle
 }

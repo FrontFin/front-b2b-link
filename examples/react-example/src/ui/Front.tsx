@@ -37,6 +37,10 @@ export const FrontComponent: React.FC<{
         },
         onEvent: ev => {
           console.info('[FRONT Event]', ev)
+        },
+        linkStyle: {
+          overlayOpacity: 0.4,
+          iframeBorderRadius: 12
         }
       })
     )

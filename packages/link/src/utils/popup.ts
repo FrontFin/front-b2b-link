@@ -1,12 +1,10 @@
-import { LinkStyles } from './types'
+import { LinkStyle } from './types'
 
 const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
 const stylesId = 'front-link-popup__styles'
 export const iframeId = 'front-link-popup__iframe'
-let overlayOpacity
-let iframeCornerRadius
 
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">
@@ -17,7 +15,7 @@ const getPopupHtml = (link: string) => `
 </div>
 `
 
-const styles = `
+const styles = (linkStyle?: LinkStyle) => `
 <style id="${stylesId}">
   body {
     position: fixed;
@@ -50,7 +48,7 @@ const styles = `
     right: 0;
     z-index: 10000;
     background: black;
-    opacity: ${overlayOpacity};
+    opacity: ${getOrDefault(0.6, linkStyle?.overlayOpacity)};
   }
 
   #${popupContentId} {
@@ -65,7 +63,7 @@ const styles = `
     min-width: 380px;
     display: flex;
     flex-direction: column;
-    border-radius: 24px;
+    border-radius: ${getOrDefault(24, linkStyle?.iframeBorderRadius)}px;
     background: white;
     flex-grow: 1;
   }
@@ -74,7 +72,7 @@ const styles = `
     border: none;
     width: 100%;
     flex-grow: 1;
-    border-radius: ${iframeCornerRadius}px;
+    border-radius: ${getOrDefault(24, linkStyle?.iframeBorderRadius)}px;
   }
 
   @media only screen and (max-width: 768px) {
@@ -110,12 +108,10 @@ export function removePopup(): void {
   existingStyles?.parentElement?.removeChild(existingStyles)
 }
 
-export function addPopup(iframeLink: string, linkStyles?: LinkStyles): void {
+export function addPopup(iframeLink: string, linkStyle?: LinkStyle): void {
   removePopup()
   const popup = getPopupHtml(iframeLink)
-  overlayOpacity = linkStyles?.overlayOpacity || 0.6
-  iframeCornerRadius = linkStyles?.iframeCornerRadius || 24
-  const stylesElement = htmlToElement(styles)
+  const stylesElement = htmlToElement(styles(linkStyle))
   if (stylesElement) {
     window.document.head.appendChild(stylesElement)
   }
@@ -131,4 +127,8 @@ function htmlToElement(html: string): Node | null {
   html = html.trim()
   template.innerHTML = html
   return template.content.firstChild
+}
+
+function getOrDefault(def: number, value?: number) {
+  return value && value >= 0 ? value : def
 }

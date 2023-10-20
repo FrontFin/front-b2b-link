@@ -105,10 +105,10 @@ function eventsListener(
         })
       }
 
-      if (currentOptions?.styles) {
+      if (currentOptions?.linkStyle) {
         postMessageToIframe({
           type: 'frontLinkStyle',
-          payload: currentOptions.styles
+          payload: currentOptions.linkStyle
         })
       }
 
@@ -137,7 +137,7 @@ export const createFrontConnection = (
     iframeUrlObject = new URL(iframeUrl)
 
     window.removeEventListener('message', eventsListener)
-    addPopup(iframeUrl, options.styles)
+    addPopup(iframeUrl, options.linkStyle)
     window.addEventListener('message', eventsListener)
   }
 
@@ -152,7 +152,7 @@ export const createFrontConnection = (
     iframeUrlObject = new URL(linkUrl)
 
     window.removeEventListener('message', eventsListener)
-    addPopup(linkUrl)
+    addPopup(linkUrl, options.linkStyle)
     window.addEventListener('message', eventsListener)
   }
 
