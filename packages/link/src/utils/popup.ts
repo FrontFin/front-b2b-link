@@ -1,5 +1,5 @@
 import { LinkStyle } from './types'
-import { getLinkStyle, getNumber } from './utils'
+import { getLinkStyle, getNumber } from './style'
 
 const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'

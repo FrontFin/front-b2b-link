@@ -1,6 +1,6 @@
-import { getLinkStyle, getNumber } from './utils'
+import { getLinkStyle, getNumber } from './style'
 
-describe('Test utils', () => {
+describe('Test style utils', () => {
   test('verify function returns a style object', () => {
     const link = 'https://some.domain&link_style=eyJpciI6IDI0LCAiaW8iOiAwLjF9'
     const received = getLinkStyle(link)
