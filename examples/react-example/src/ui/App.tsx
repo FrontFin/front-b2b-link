@@ -35,7 +35,11 @@ export const App: React.FC = () => {
     } else if (!data.content.linkToken) {
       setError('Iframe url is empty')
     } else {
-      setLinkToken(data.content.linkToken)
+      // todo: remove temp solution before merge
+      const link = window.atob(data.content.linkToken)
+      setLinkToken(
+        window.btoa(link + '&link_style=eyJpciI6IDIsICJpbyI6IDAuOH0=')
+      )
     }
   }, [])
 
