@@ -16,7 +16,7 @@ const getPopupHtml = (link: string) => `
 </div>
 `
 
-const styles = (style?: LinkStyle) => `
+const getStyles = (style?: LinkStyle) => `
 <style id="${stylesId}">
   body {
     position: fixed;
@@ -113,7 +113,7 @@ export function addPopup(iframeLink: string): void {
   const style = getLinkStyle(iframeLink)
   removePopup()
   const popup = getPopupHtml(iframeLink)
-  const stylesElement = htmlToElement(styles(style))
+  const stylesElement = htmlToElement(getStyles(style))
   if (stylesElement) {
     window.document.head.appendChild(stylesElement)
   }

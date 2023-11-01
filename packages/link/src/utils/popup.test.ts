@@ -2,7 +2,7 @@ import { addPopup, removePopup } from './popup'
 
 describe('Popup tests', () => {
   test('addPopup should add correct popup', () => {
-    const link = 'https://some.domain&link_style=eyJpciI6IDIsICJpbyI6IDAuOH0='
+    const link = 'https://some.domain?link_style=eyJpciI6IDIsICJpbyI6IDAuOH0='
     addPopup(link)
 
     const stylesElement = document.getElementById('front-link-popup__styles')
