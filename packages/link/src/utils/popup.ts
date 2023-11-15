@@ -102,16 +102,20 @@ const getStyles = (style?: LinkStyle) => `
 </style>
 `
 
-function addPlatformSpecs(): void {
+function addPlatformSpecs(iframeLink: string): string {
   const windowObj = window as Record<string, any>;
-  windowObj.meshSdkPlatform= windowObj.meshSdkPlatform || sdkSpecs.platform;
-  windowObj.meshSdkVersion= windowObj.version || sdkSpecs.version;
+  windowObj.meshSdkPlatform= sdkSpecs.platform;
+  windowObj.meshSdkVersion= sdkSpecs.version;
 
   if (window.parent) {
     const parentWindowObj = window.parent as Record<string, any>;
-    parentWindowObj.meshSdkPlatform= windowObj.meshSdkPlatform || sdkSpecs.platform;
-    parentWindowObj.meshSdkVersion= windowObj.version ||  sdkSpecs.version;
+    parentWindowObj.meshSdkPlatform= sdkSpecs.platform;
+    parentWindowObj.meshSdkVersion= sdkSpecs.version;
   }
+
+  const platformSpecsString = `sdk_platform=${sdkSpecs.platform}&sdk_version=${sdkSpecs.version}`;
+
+  return iframeLink.includes('?') ? `${iframeLink}&${platformSpecsString}` : `${iframeLink}?${platformSpecsString}`;
 }
 
 export function removePopup(): void {
@@ -123,10 +127,10 @@ export function removePopup(): void {
 }
 
 export function addPopup(iframeLink: string): void {
-  addPlatformSpecs()
+  const extendedLink = addPlatformSpecs(iframeLink)
   const style = getLinkStyle(iframeLink)
   removePopup()
-  const popup = getPopupHtml(iframeLink)
+  const popup = getPopupHtml(extendedLink)
   const stylesElement = htmlToElement(getStyles(style))
   if (stylesElement) {
     window.document.head.appendChild(stylesElement)
