@@ -102,7 +102,7 @@ const getStyles = (style?: LinkStyle) => `
 </style>
 `
 
-function addPlatformSpecs(iframeLink: string): string {
+function addPlatformSpecs(): void {
   const windowObj = window as Record<string, any>;
   windowObj.meshSdkPlatform= sdkSpecs.platform;
   windowObj.meshSdkVersion= sdkSpecs.version;
@@ -112,10 +112,6 @@ function addPlatformSpecs(iframeLink: string): string {
     parentWindowObj.meshSdkPlatform= sdkSpecs.platform;
     parentWindowObj.meshSdkVersion= sdkSpecs.version;
   }
-
-  const platformSpecsString = `sdk_platform=${sdkSpecs.platform}&sdk_version=${sdkSpecs.version}`;
-
-  return iframeLink.includes('?') ? `${iframeLink}&${platformSpecsString}` : `${iframeLink}?${platformSpecsString}`;
 }
 
 export function removePopup(): void {
@@ -127,10 +123,10 @@ export function removePopup(): void {
 }
 
 export function addPopup(iframeLink: string): void {
-  const extendedLink = addPlatformSpecs(iframeLink)
+  addPlatformSpecs()
   const style = getLinkStyle(iframeLink)
   removePopup()
-  const popup = getPopupHtml(extendedLink)
+  const popup = getPopupHtml(iframeLink)
   const stylesElement = htmlToElement(getStyles(style))
   if (stylesElement) {
     window.document.head.appendChild(stylesElement)
