@@ -1,5 +1,6 @@
 import { LinkStyle } from './types'
 import { getLinkStyle, getNumber } from './style'
+import { sdkSpecs } from "./sdk-specs";
 
 const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
@@ -101,6 +102,18 @@ const getStyles = (style?: LinkStyle) => `
 </style>
 `
 
+function addPlatformSpecs(): void {
+  const windowObj = window as Record<string, any>;
+  windowObj.meshSdkPlatform= windowObj.meshSdkPlatform || sdkSpecs.platform;
+  windowObj.meshSdkVersion= windowObj.version || sdkSpecs.version;
+
+  if (window.parent) {
+    const parentWindowObj = window.parent as Record<string, any>;
+    parentWindowObj.meshSdkPlatform= windowObj.meshSdkPlatform || sdkSpecs.platform;
+    parentWindowObj.meshSdkVersion= windowObj.version ||  sdkSpecs.version;
+  }
+}
+
 export function removePopup(): void {
   const existingPopup = window.document.getElementById(popupId)
   existingPopup?.parentElement?.removeChild(existingPopup)
@@ -110,6 +123,7 @@ export function removePopup(): void {
 }
 
 export function addPopup(iframeLink: string): void {
+  addPlatformSpecs()
   const style = getLinkStyle(iframeLink)
   removePopup()
   const popup = getPopupHtml(iframeLink)
