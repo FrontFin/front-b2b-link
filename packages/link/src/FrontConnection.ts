@@ -92,7 +92,7 @@ function eventsListener(
         iframeElement().contentWindow?.postMessage({
           type: 'meshSDKSpecs',
           payload: { ...sdkSpecs }
-        })
+        }, iframeUrlObject?.origin || 'https://web.getfront.com')
 
         iframeElement().contentWindow?.postMessage(
           { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
