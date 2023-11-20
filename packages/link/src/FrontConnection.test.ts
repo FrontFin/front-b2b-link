@@ -268,7 +268,7 @@ describe('createFrontConnection tests', () => {
     const packageJSONContent = JSON.parse(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('fs').readFileSync('package.json', 'utf8')
-    );
+    )
     expect(postMessageSpy).toBeCalledWith(
       {
         type: 'meshSDKSpecs',
@@ -277,8 +277,8 @@ describe('createFrontConnection tests', () => {
           version: packageJSONContent.version
         }
       },
-      "http://localhost"
-    );
+      'http://localhost'
+    )
 
     expect(postMessageSpy).toBeCalledWith(
       { type: 'frontAccessTokens', payload: tokens },
