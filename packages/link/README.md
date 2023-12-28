@@ -2,6 +2,12 @@
 
 JS library for integrating with Front Finance
 
+### 📌 Deprecation Notice
+
+As of Dec 7, 2023 this package is no longer maintained and has been superseded by a new version. For the latest features, improvements, and bug fixes, please use our updated package: [mesh-web-sdk](https://github.com/FrontFin/mesh-web-sdk).
+
+We encourage all users to migrate to the new package for continued support and updates.
+
 ### Install
 
 With `npm`:
